@@ -1,1 +1,1 @@
-# artist-management-system
+# blog app
