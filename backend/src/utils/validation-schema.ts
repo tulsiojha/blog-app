@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { IUser } from "../services/user.service";
-import { IPost } from "../services/song.service";
+import { IPost } from "../services/post.service";
 
 export const validateUser = (data: IUser) => {
   const schema = z.object({
