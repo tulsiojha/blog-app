@@ -1,16 +1,28 @@
 import * as z from "zod";
 import { loginSchema, registerSchema } from "@/lib/schemas";
 import { queryClient } from "@/utils/query-client";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import useSession from "./use-session";
 import { useRouter } from "next/navigation";
 
 type ILoginSchema = z.infer<typeof loginSchema>;
 type IRegisterSchema = z.infer<typeof registerSchema>;
 
-const AuthContext = createContext({});
+const AuthContext = createContext<{
+  login?: (data: ILoginSchema) => Promise<void>;
+  register?: (data: IRegisterSchema) => Promise<void>;
+  logout: () => void;
+  user: any;
+  loading: boolean;
+}>({ user: null, loading: false, logout() {} });
 
-export const AuthProvider = () => {
+export const AuthProvider = ({ children }: { children?: ReactNode }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { saveToken, saveUser, removeToken, removeUser, getUser } =
@@ -52,9 +64,14 @@ export const AuthProvider = () => {
     removeToken();
     removeUser();
     setUser(null);
+    router.push("/auth/login");
   };
 
-  return { user, login, register, logout, loading };
+  return (
+    <AuthContext.Provider value={{ login, register, logout, user, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 const useAuth = () => {
