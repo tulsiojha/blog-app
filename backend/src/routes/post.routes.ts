@@ -7,7 +7,7 @@ const postRouter = express.Router();
 postRouter.get("/", postController.getAll);
 
 /* fetch one post */
-postRouter.get("/:id", postController.getById);
+postRouter.get("/:slug", postController.getBySlug);
 
 /* create a post */
 postRouter.post("/", postController.create);

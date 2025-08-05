@@ -8,6 +8,7 @@ import { validateLogin, validateUser } from "../utils/validation-schema";
 const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
     validateLogin(req.body);
     const [user] = await userService.findOneByEmail({ email });
     if (user.length) {
@@ -15,7 +16,7 @@ const login = async (req: Request, res: Response) => {
       const pswdMatch = await bcrypt.compare(password, pswd);
       if (pswdMatch) {
         const accessToken = generateAccessToken(email);
-        res.json({ data: { accessToken }, error: null });
+        res.json({ data: { accessToken, user: user[0] }, error: null });
         return;
       } else {
         res
@@ -36,6 +37,7 @@ const register = async (req: Request, res: Response) => {
   try {
     const body = req.body;
     validateUser(req.body);
+    console.log(req.body);
     const { password } = body;
     if (!password) {
       res.json({ data: null, error: "Password is required." });

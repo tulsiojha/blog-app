@@ -3,6 +3,8 @@ import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { IPageInfo, IPageResult } from "../utils/commons";
 
 export interface IUser extends RowDataPacket {
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   created_at?: Date;
@@ -38,12 +40,12 @@ const findOneByEmail = ({ email }: { email: string }) => {
 
 /* create a user */
 const insertOne = (props: IUser) => {
-  const { email, password } = props;
+  const { email, password, first_name, last_name } = props;
   return db
     .promise()
     .query<ResultSetHeader>(
-      "INSERT INTO user (email, password) VALUES (?, ?);",
-      [email, password],
+      "INSERT INTO user (email, password, first_name, last_name) VALUES (?, ?, ?, ?);",
+      [email, password, first_name, last_name],
     );
 };
 

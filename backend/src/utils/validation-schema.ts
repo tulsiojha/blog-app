@@ -1,9 +1,16 @@
 import { z } from "zod";
 import { IUser } from "../services/user.service";
 import { IPost } from "../services/post.service";
+import { ITag } from "../services/tag.service";
 
 export const validateUser = (data: IUser) => {
   const schema = z.object({
+    first_name: z.string({
+      required_error: "first_name is required",
+    }),
+    last_name: z.string({
+      required_error: "last_name is required",
+    }),
     email: z
       .string({
         required_error: "email is required",
@@ -24,10 +31,15 @@ export const validatePost = (data: IPost) => {
     title: z.string(),
     slug: z.string(),
     content: z.string(),
-    cover: z.string(),
-    tags: z.string(),
-    category: z.number(),
+    tags: z.array(z.string()).min(1),
     is_draft: z.boolean(),
+  });
+  return schema.parse(data);
+};
+
+export const validateTag = (data: ITag) => {
+  const schema = z.object({
+    name: z.string(),
   });
   return schema.parse(data);
 };
