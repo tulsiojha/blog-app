@@ -4,23 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { List, Pen } from "lucide-react";
 import ProfileMenu from "./profile-menu";
+import ThemeProvider from "@/hooks/use-theme";
+import ThemeToggle from "./theme-toggle";
 
 export const menuItems = [
   {
     name: "List posts",
     icon: <List size={16} />,
-    to: "/dashboard/",
+    to: "/dashboard/posts",
   },
   {
     name: "Create post",
     icon: <Pen size={16} />,
-    to: "/dashboard/",
+    to: "/dashboard/create-post",
   },
 ];
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <nav className="hidden flex-col px-4 bg-tertiary lg:flex">
+    <nav className="hidden flex-col px-4 bg-tertiary lg:flex fixed left-0 top-0 bottom-0">
       <div className="font-bold text-2xl py-5 flex items-center text-primary">
         Blog app
       </div>
@@ -31,7 +33,7 @@ const Sidebar = () => {
             <Link
               href={item.to}
               className={cn(
-                "px-3 py-2 flex flex-row gap-2 items-center rounded-lg",
+                "px-3 py-2 flex flex-row gap-2 items-center rounded-lg text-text-secondary",
                 {
                   "bg-tertiary-active": pathname.includes(item.to),
                   "hover:bg-surface-hover": !pathname.includes(item.to),
@@ -44,6 +46,7 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
+      <ThemeToggle />
       <ProfileMenu />
     </nav>
   );

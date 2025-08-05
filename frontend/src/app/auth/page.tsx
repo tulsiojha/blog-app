@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
 const Page = () => {
-  redirect("/auth/login");
+  return null;
 };
 
 export default Page;

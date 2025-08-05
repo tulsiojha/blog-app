@@ -8,6 +8,7 @@ import useAuth from "@/hooks/use-auth";
 import Link from "next/link";
 import { cn } from "@/utils/commons";
 import Button from "./button";
+import ThemeToggle from "./theme-toggle";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -23,9 +24,9 @@ const Header = () => {
   return (
     <nav className="border-b-2 border-tertiary-border bg-surface h-[68px] flex items-center px-5 lg:hidden">
       <div className="flex flex-row justify-between items-center w-full">
-        <div className="font-bold text-primary">AMS</div>
+        <div className="font-bold text-primary">Blog app</div>
         <button
-          className="p-3 flex items-center justify-center"
+          className="p-3 flex items-center justify-center text-text-secondary"
           onClick={() => {
             setOpen((p) => !p);
           }}
@@ -35,7 +36,7 @@ const Header = () => {
         </button>
       </div>
       {open ? (
-        <div className="fixed inset-0 z-[999999] bg-tertiary top-[68px] p-4">
+        <div className="fixed inset-0 z-[999999] bg-tertiary top-[68px] p-4 text-text-secondary">
           <ul>
             {menuItems.map((item) => (
               <li key={item.name}>
@@ -56,8 +57,11 @@ const Header = () => {
               </li>
             ))}
           </ul>
+          <div className="px-5">
+            <ThemeToggle />
+          </div>
           <Button
-            className="!p-5 flex items-center justify-center gap-2 border border-tertiary-border rounded w-full mt-5"
+            className="!p-5 flex items-center justify-center gap-2 border border-tertiary-border rounded w-full mt-5 text-text-secondary"
             variant="secondary"
             loading={logoutLoading}
             onClick={async () => {

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/schemas";
+import useAuth from "@/hooks/use-auth";
 
 type ISchema = z.infer<typeof registerSchema>;
 
@@ -18,14 +19,21 @@ const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (e: ISchema) => {};
+  const { register: signup } = useAuth();
+
+  const onSubmit = async (e: ISchema) => {
+    const { repassword: _, ...data } = e;
+    return signup?.(data);
+  };
 
   return (
     <form
       className="flex flex-col gap-5 w-[350px]"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="text-center font-bold text-xl">Register</div>
+      <div className="text-center font-bold text-xl text-text-secondary">
+        Register
+      </div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row items-start gap-2">
           <TextInput
@@ -66,7 +74,7 @@ const RegisterForm = () => {
       <Button variant="primary" type="submit" loading={isSubmitting}>
         Register
       </Button>
-      <div className="text-center">
+      <div className="text-center text-text-secondary">
         Already have an account?{" "}
         <Link
           href={"/auth/login"}

@@ -1,13 +1,21 @@
 "use client";
 import useAuth from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 const AuthLayout = ({ children }: { children?: ReactNode }) => {
   const { user } = useAuth();
   const router = useRouter();
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    } else {
+      router.push("/auth/login");
+    }
+  }, [user]);
+
   if (user) {
-    router.push("/dashboard");
+    return null;
   }
   return <>{children}</>;
 };

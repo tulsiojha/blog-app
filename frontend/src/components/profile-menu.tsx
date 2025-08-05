@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import useAuth from "@/hooks/use-auth";
 import { IUser } from "@/utils/types";
@@ -14,27 +14,39 @@ const getInitials = (user: IUser | null) => {
 };
 
 const ProfileMenu = () => {
+  const [initials, setInitials] = useState<ReactNode>(null);
   const { logout, user } = useAuth();
 
   const handleLogout = async () => {
     logout();
   };
+
+  useEffect(() => {
+    setInitials(getInitials(user) || "");
+  }, [user]);
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="border-t-1 -mx-4 px-2 border-tertiary-border py-2 flex flex-row items-center gap-2 cursor-pointer hover:bg-tertiary-hover">
-          <div className="font-bold rounded-full flex items-center justify-center bg-pink-400 h-10 w-10 text-white">
-            {getInitials(user)}
-          </div>
-          <div className="flex flex-col items-start flex-1">
-            <span className="text-sm font-bold">
-              {user?.first_name} {user?.last_name}
-            </span>
-            <span className="text-xs text-black/70">{user?.email}</span>
-          </div>
-          <div>
-            <ChevronsUpDown size={20} />
-          </div>
+        <button className="border-t-1 -mx-4 px-2 min-w-[233px] h-[57px] border-tertiary-border py-2 flex flex-row items-center gap-2 cursor-pointer hover:bg-tertiary-hover">
+          {initials ? (
+            <>
+              <div className="font-bold rounded-full flex items-center justify-center bg-pink-400 h-10 w-10 text-white">
+                {initials}
+              </div>
+              <div className="flex flex-col items-start flex-1">
+                <span className="text-sm font-bold text-text-secondary">
+                  {user?.first_name} {user?.last_name}
+                </span>
+                <span className="text-xs text-text-secondary">
+                  {user?.email}
+                </span>
+              </div>
+              <div>
+                <ChevronsUpDown size={20} />
+              </div>
+            </>
+          ) : null}
         </button>
       </DropdownMenu.Trigger>
 

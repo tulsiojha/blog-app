@@ -21,14 +21,23 @@ export interface IPost {
   title: string;
   slug: string;
   content: string;
-  cover: string;
-  tags: string;
-  category: number;
+  tags: string[];
   is_draft: boolean;
   created_at?: Date;
   updated_at?: Date;
 }
 
 export type IPostResponse = {
-  data: { songs: IPost[]; pageInfo: IPageResult };
+  data: { posts: IPost[]; pageInfo: IPageResult };
+};
+
+export interface ITag {
+  id: number;
+  name: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export type ITagResponse = {
+  data: { tags: ITag[]; pageInfo: IPageResult };
 };
