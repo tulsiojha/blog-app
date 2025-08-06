@@ -4,6 +4,8 @@ import { queryClient } from "@/utils/query-client";
 import { createContext, ReactNode, use, useEffect, useState } from "react";
 import useSession from "./use-session";
 import { useRouter } from "next/navigation";
+import { toast } from "@/utils/commons";
+import handleErrors from "@/utils/handleErrors";
 
 type ILoginSchema = z.infer<typeof loginSchema>;
 
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children?: ReactNode }) => {
       saveToken(accessToken);
       router.push("/dashboard/posts");
     } catch (e) {
+      toast(handleErrors(e), "error");
       console.log(e);
     } finally {
       setLoading(false);
@@ -51,6 +54,7 @@ export const AuthProvider = ({ children }: { children?: ReactNode }) => {
       await queryClient.post("/auth/register", data);
       router.push("/auth/login");
     } catch (e) {
+      toast(handleErrors(e), "error");
       console.log(e);
     }
   };
