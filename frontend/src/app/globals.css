@@ -63,3 +63,7 @@
   width: 200px !important;
   right: 0px;
 }
+
+.react-tiny-popover-container {
+  z-index: 999999999999999999999 !important;
+}
