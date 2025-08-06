@@ -12,8 +12,8 @@ const passwordSchema = {
 
 export const registerSchema = z
   .object({
-    first_name: z.string(),
-    last_name: z.string(),
+    first_name: z.string().nonempty("First name is required"),
+    last_name: z.string().nonempty("Last name is required"),
     ...userBaseSchema,
     ...passwordSchema,
   })
@@ -28,8 +28,8 @@ export const registerSchema = z
   });
 
 export const loginSchema = z.object({
-  email: z.email(),
-  password: z.string().min(6),
+  email: z.email("invalid email"),
+  password: z.string().min(6, "at least 6 characters are required"),
 });
 
 // post schemas
@@ -38,8 +38,5 @@ export const postSchema = z.object({
   title: z.string(),
   slug: z.string(),
   content: z.string(),
-  cover: z.string(),
-  tags: z.string(),
-  category: z.number(),
   is_draft: z.boolean(),
 });
