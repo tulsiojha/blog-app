@@ -16,30 +16,40 @@ import useTags from "@/hooks/use-tags";
 
 const Posts = () => {
   const router = useRouter();
-  const sp = useSearchParams();
-  const [page, limit, tags, search] = [
-    sp.get("page"),
-    sp.get("limit"),
-    sp.get("tags"),
-    sp.get("search"),
-  ];
+  const searchParams = useSearchParams();
+  const currentParams = useMemo(
+    () => ({
+      page: searchParams.get("page"),
+      limit: searchParams.get("limit"),
+      tags: searchParams.get("tags"),
+      search: searchParams.get("search"),
+    }),
+    [searchParams],
+  );
 
-  const [searchText, setSearchText] = useState(search || "");
+  const [searchText, setSearchText] = useState(currentParams.search || "");
 
   useDebounce(
     async () => {
-      router.push(getParams("search", searchText, sp));
+      router.push(getParams("search", searchText, searchParams));
     },
     [searchText],
     300,
   );
 
-  const { tags: tagsList } = useTags({ prefetchTags: true });
   const posts = usePosts({
-    queryParams: { page, limit, tags, search },
+    queryParams: currentParams,
   });
+
+  const { tags: tagsList } = useTags({ prefetchTags: true });
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<IPost | undefined>();
+
+  const selectedTags = useMemo(
+    () => (currentParams.tags ? currentParams.tags.split(",") : []),
+    [currentParams.tags],
+  );
 
   return (
     <div className="p-2 flex flex-col">
@@ -58,9 +68,9 @@ const Posts = () => {
             </div>
             <PostFilter
               tags={tagsList}
-              value={useMemo(() => (!!tags ? tags?.split(",") : []), [tags])}
+              value={selectedTags}
               onChange={(f) => {
-                router.push(getParams("tags", f.join(","), sp));
+                router.push(getParams("tags", f.join(","), searchParams));
               }}
             />
           </div>
@@ -68,13 +78,13 @@ const Posts = () => {
       />
       <List
         totalItems={posts?.posts?.data?.pageInfo.total || 0}
-        page={Number(page || 1)}
+        page={Number(currentParams.page || 1)}
         onPageChanged={(p) => {
-          router.push(getParams("page", p, sp));
+          router.push(getParams("page", p, searchParams));
         }}
-        perPage={Number(limit) || PAGINATION_LIMIT}
+        perPage={Number(currentParams.limit) || PAGINATION_LIMIT}
         onLimitChanged={(e) => {
-          router.push(getParams("limit", e, sp));
+          router.push(getParams("limit", e, searchParams));
         }}
         columns={[
           {

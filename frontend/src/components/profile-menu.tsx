@@ -56,7 +56,7 @@ const ProfileMenu = () => {
           sideOffset={5}
         >
           <DropdownMenu.Item
-            className="cursor-pointer group relative flex select-none flex-row items-center gap-2 p-2 rounded-[3px] leading-none text-text-secondary outline-none data-[disabled]:pointer-events-none hover:bg-surface-hover"
+            className="cursor-pointer group relative flex select-none flex-row items-center gap-2 p-2 rounded-[3px] leading-none text-text-secondary outline-none data-[disabled]:pointer-events-none hover:bg-tertiary-hover"
             onSelect={handleLogout}
           >
             <PowerCircle size={16} />

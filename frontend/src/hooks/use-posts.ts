@@ -38,6 +38,7 @@ const usePosts = ({ queryParams }: { queryParams?: Record<string, any> }) => {
         }
       })();
     }
+    console.log("here");
   }, [
     queryParams?.limit,
     queryParams?.page,
