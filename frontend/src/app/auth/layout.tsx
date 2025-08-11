@@ -17,10 +17,11 @@ const AuthLayout = ({ children }: { children?: ReactNode }) => {
   }, [loading, user, router]);
 
   if (loading) {
-    return <div className="h-screen">Checking authentication…</div>;
+    return (
+      <div className="h-screen text-text-primary">Checking authentication…</div>
+    );
   }
 
-  console.log("user", user);
   if (user) {
     return null;
   }

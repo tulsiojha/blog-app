@@ -15,8 +15,9 @@ const DashLayout = ({ children }: { children?: ReactNode }) => {
   }, [user, router]);
 
   if (loading) {
-    // stable placeholder, so SSR & CSR match
-    return <div style={{ height: "100vh" }}>Checking authentication…</div>;
+    return (
+      <div className="h-screen text-text-primary">Checking authentication…</div>
+    );
   }
 
   if (!user) {
