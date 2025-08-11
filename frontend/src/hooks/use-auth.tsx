@@ -19,13 +19,15 @@ const AuthContext = createContext<{
 
 export const AuthProvider = ({ children }: { children?: ReactNode }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { saveToken, saveUser, removeToken, removeUser, getUser } =
     useSession();
   const [user, setUser] = useState(getUser());
 
   useEffect(() => {
+    setLoading(true);
     setUser(getUser());
+    setLoading(false);
   }, []);
 
   const login = async (data: ILoginSchema) => {

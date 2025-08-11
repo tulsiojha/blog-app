@@ -5,13 +5,24 @@ import Dash from "./dash";
 import useAuth from "@/hooks/use-auth";
 
 const DashLayout = ({ children }: { children?: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
+
   useEffect(() => {
     if (!user) {
       router.push("/auth/login");
     }
-  }, [user]);
+  }, [user, router]);
+
+  if (loading) {
+    // stable placeholder, so SSR & CSR match
+    return <div style={{ height: "100vh" }}>Checking authentication…</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
   return <Dash>{children}</Dash>;
 };
 
